@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #"INTEL CONFIDENTIAL"
-#Copyright 2015  Intel Corporation All Rights Reserved. 
+#Copyright 2015  Intel Corporation All Rights Reserved.
 #
 #The source code contained or described herein and all documents related to the source code ("Material") are owned by Intel Corporation or its suppliers or licensors. Title to the Material remains with Intel Corporation or its suppliers and licensors. The Material contains trade secrets and proprietary and confidential information of Intel or its suppliers and licensors. The Material is protected by worldwide copyright and trade secret laws and treaty provisions. No part of the Material may be used, copied, reproduced, modified, published, uploaded, posted, transmitted, distributed, or disclosed in any way without Intel's prior express written permission.
 #
@@ -81,12 +81,14 @@ query_run_validate_method () {
 			echo "Validation passed: Query 1 returned results"
 		else
 			echo "Validation failed: Query 1 did not return results"
+			return 1
 		fi
 		if [ `hadoop fs -cat "$RESULT_DIR2/*" | head -n 10 | wc -l` -ge 1 ]
 		then
 			echo "Validation passed: Query 2 returned results"
 		else
 			echo "Validation failed: Query 2 did not return results"
+			return 1
 		fi
 	fi
 }
