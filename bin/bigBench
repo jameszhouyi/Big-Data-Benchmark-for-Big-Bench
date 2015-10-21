@@ -236,18 +236,13 @@ fi
 
 # if there are no parameters or the first parameter starts with "-"
 # the user has not provided any module to run
-if [ $# -eq 0 ]
+if [[ $# -eq 0 || "`echo "$1" | cut -c1`" = "-" ]]
 then
   export MODULE_NAME=""
   SHOW_HELP="1"
 else
-  if [[ "`echo "$1" | cut -c1`" = "-" ]]
-  then
-    export MODULE_NAME=""
-  else
-    export MODULE_NAME="$1"
-    shift
-  fi
+  export MODULE_NAME="$1"
+  shift
 fi
 
 export LIST_OF_USER_OPTIONS="$@"
@@ -423,7 +418,16 @@ then
 fi
 
 # as the module's bin directory is known at this point, the help can list all modules within that directory
-[[ "$SHOW_HELP" -eq 1 && -z "$MODULE_NAME" ]] && showGlobalHelp
+# if the user has not specified a module, stop execution here
+if [[ "$SHOW_HELP" -eq 1 && -z "$MODULE_NAME" ]]
+then
+  echo "*****"
+  echo "***** Error: no module specified."
+  echo "***** The module has to be the first parameter of this script"
+  echo "*****"
+  echo
+  showGlobalHelp
+fi
 
 ## ===================================================
 ## check for module existence and correctness
